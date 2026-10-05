@@ -26,6 +26,7 @@ import db
 API = "https://data.judicial.gov.tw/jdg/api"
 DELAY = 0.5  # 每筆之間暫停秒數，避免對司法院主機造成負擔
 TW = timezone(timedelta(hours=8))
+DEMO_TAG = "【範例】"  # 範例資料的案由前綴，前端據此標示
 
 
 def post(endpoint, payload):
@@ -148,7 +149,7 @@ def demo(count=60):
         )
         db.upsert(conn, {
             "jid": f"{court}{code},{y},{word},{no},{date},1", "jyear": str(y), "jcase": word,
-            "jno": str(no), "jdate": date, "title": title, "content": content, "pdf_url": None,
+            "jno": str(no), "jdate": date, "title": DEMO_TAG + title, "content": content, "pdf_url": None,
         })
     conn.commit()
     print(f"已產生 {count} 筆範例資料 → {db.DB_PATH}")

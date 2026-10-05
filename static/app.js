@@ -7,6 +7,9 @@ let page = 1;
 let CODES = { courts: {}, case_types: {} };
 const courtName = (c) => CODES.courts[c] ?? c;
 const typeName = (t) => CODES.case_types[t] ?? t;
+const DEMO_TAG = "【範例】";
+const isDemo = (title) => (title ?? "").startsWith(DEMO_TAG);
+const plainTitle = (title) => isDemo(title) ? title.slice(DEMO_TAG.length) : title ?? "";
 
 async function getJSON(url) {
   const r = await fetch(url);
@@ -43,9 +46,9 @@ async function runSearch(append = false) {
     const data = await getJSON("api/search?" + p);
     $("#summary").textContent = `找到 ${data.total.toLocaleString()} 筆`;
     $("#results").insertAdjacentHTML("beforeend", data.items.map((it) => `
-      <li><a class="item" href="#doc=${it.id}">
+      <li><a class="item${isDemo(it.title) ? " demo" : ""}" href="#doc=${it.id}">
         <h3>${esc(courtName(it.court))} ${esc(it.jyear)}年度${esc(it.jcase)}字第${esc(it.jno)}號</h3>
-        <div class="meta"><span class="tag">${esc(typeName(it.case_type))}</span>${esc(it.title)}　${esc(it.jdate)}</div>
+        <div class="meta">${isDemo(it.title) ? '<span class="tag demo">範例・非真實判決</span>' : ""}<span class="tag">${esc(typeName(it.case_type))}</span>${esc(plainTitle(it.title))}　${esc(it.jdate)}</div>
         <p>${hl(it.snippet)}</p>
       </a></li>`).join(""));
     $("#more").hidden = data.page * data.page_size >= data.total;
@@ -57,12 +60,13 @@ async function runSearch(append = false) {
 async function showDoc(id) {
   $("#list-view").hidden = true; $("#doc-view").hidden = false; $("#back").hidden = false;
   $("#doc-title").textContent = "載入中…"; $("#doc-meta").textContent = ""; $("#doc-body").textContent = "";
-  $("#doc-pdf").hidden = true;
+  $("#doc-pdf").hidden = true; $("#doc-demo").hidden = true;
   window.scrollTo(0, 0);
   try {
     const d = await getJSON("api/doc?id=" + encodeURIComponent(id));
     $("#doc-title").textContent = `${courtName(d.court)} ${d.jyear}年度${d.jcase}字第${d.jno}號`;
-    $("#doc-meta").textContent = `${typeName(d.case_type)}｜${d.title || ""}｜裁判日期 ${d.jdate}`;
+    $("#doc-meta").textContent = `${typeName(d.case_type)}｜${plainTitle(d.title)}｜裁判日期 ${d.jdate}`;
+    $("#doc-demo").hidden = !isDemo(d.title);
     $("#doc-body").textContent = d.content || "（本筆僅提供 PDF）";
     if (d.pdf_url) { $("#doc-pdf").hidden = false; $("#doc-pdf a").href = d.pdf_url; }
   } catch (e) {

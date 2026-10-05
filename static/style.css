@@ -56,3 +56,9 @@ mark { background: var(--mark); color: inherit; border-radius: 2px; }
   background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px;
 }
 a { color: var(--accent); }
+
+/* 範例資料標示 */
+.item.demo { border-style: dashed; }
+.tag.demo { background: var(--demo); color: #fff; border-color: var(--demo); }
+.demo-banner { background: var(--demo); color: #fff; padding: 10px 14px; border-radius: 10px; font-size: 14px; }
+:root { --demo: #c0392b; }

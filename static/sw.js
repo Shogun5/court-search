@@ -1,5 +1,5 @@
 // 外殼檔案先快取 → 離線也能開啟；API 走網路優先，失敗時用上次的結果。
-const VERSION = "v2";
+const VERSION = "v3";
 const SHELL = ["./", "index.html", "style.css", "app.js", "manifest.json", "courts.json",
   "icons/icon-192.png", "icons/icon-512.png"];
 
