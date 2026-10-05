@@ -1,0 +1,5 @@
+judgments.db*
+__pycache__/
+.env
+.netlify/
+*.log

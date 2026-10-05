@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>判決檢索</title>
+<meta name="description" content="法院判決全文檢索">
+<meta name="theme-color" content="#1f3a5f">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="判決檢索">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="bar">
+  <button id="back" class="icon-btn" hidden aria-label="返回">‹</button>
+  <h1>判決檢索</h1>
+  <span id="net" class="net" hidden>離線</span>
+</header>
+
+<main id="list-view">
+  <form id="search" autocomplete="off">
+    <div class="qrow">
+      <input id="q" type="search" placeholder="關鍵字，例如：損害賠償 詐欺" enterkeyhint="search">
+      <button type="submit">搜尋</button>
+    </div>
+    <details id="filters">
+      <summary>篩選條件</summary>
+      <div class="grid">
+        <label>法院<select id="court"><option value="">全部</option></select></label>
+        <label>類別<select id="type"><option value="">全部</option></select></label>
+        <label>起日<input id="from" type="date"></label>
+        <label>迄日<input id="to" type="date"></label>
+        <label>排序<select id="sort"><option value="date">日期新到舊</option><option value="relevance">相關度</option></select></label>
+      </div>
+    </details>
+  </form>
+  <p id="summary" class="muted"></p>
+  <ol id="results"></ol>
+  <button id="more" class="more" hidden>載入更多</button>
+</main>
+
+<article id="doc-view" hidden>
+  <h2 id="doc-title"></h2>
+  <p id="doc-meta" class="muted"></p>
+  <p id="doc-pdf" hidden><a target="_blank" rel="noopener">開啟 PDF 原檔</a></p>
+  <pre id="doc-body"></pre>
+</article>
+
+<script src="app.js"></script>
+</body>
+</html>
